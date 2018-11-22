@@ -40,7 +40,7 @@ namespace EventosPOA
             txtSenha.Enabled = false;
             btnlogin.Enabled = false;
             MySQL mysql = new MySQL();
-
+            mysql.Connect();
             try
             {
                 //Construir objeto usuario?

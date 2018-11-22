@@ -37,5 +37,16 @@ namespace EventosPOA
         {
             labelUserName.Text = "Bem vindo, " + user.GetName();
         }
+
+        private void eventosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TodosEventos TE = new TodosEventos(user);
+            TE.ShowDialog();
+        }
+
+        private void meusEventosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

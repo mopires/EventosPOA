@@ -63,9 +63,8 @@ namespace EventosPOA
                            "username = '" + username + "' " +
                            "AND pass = '" + pass + "'";
 
-            Connect();
             comando = new MySqlCommand(query, conexao);
-
+            Connect();
             if (CheckConnection())
             {
                 MySqlDataReader data = comando.ExecuteReader();
@@ -135,6 +134,99 @@ namespace EventosPOA
 
 
         }
+
+        public DataTable ListaTodosEventos(int ev = 0, string username = null)
+        {
+            string query;
+            if (ev == 0)
+            {
+                query = "SELECT * FROM eventos";
+
+            }
+            else
+            {
+                query = "SELECT * FROM eventos WHERE idEvento " +
+                        "IN(SELECT idEvento FROM participacoes WHERE username = '"+username+"')";
+            }
+
+
+            comando = new MySqlCommand(query, conexao);
+            MySqlDataAdapter dataAdapter;
+            DataTable tabela = new DataTable();
+
+            dataAdapter = new MySqlDataAdapter(comando);
+            dataAdapter.Fill(tabela);
+
+            return tabela;            
+
+        }
+
+        public string ParticiparEvento(int idEvento, string username)
+        {
+
+            string query = "INSERT INTO participacoes (idEvento, username)" +
+                           "VALUES ('" + idEvento + "', '" + username + "')";
+
+            comando = new MySqlCommand(query, conexao);
+
+           
+            try
+            {
+                comando.ExecuteReader();
+                return "Voce esta participando do evento!";
+            }
+            catch (MySqlException mysqlEx)
+            {
+                throw mysqlEx;
+            }
+
+            
+
+
+        }
+
+        public string CancelarParticipacao(int idEvento, string username)
+        {
+
+            string query = "DELETE FROM participacoes WHERE idEvento = "+idEvento+" " +
+                           "AND username = '"+username+"'";
+
+            comando = new MySqlCommand(query, conexao);
+
+            try
+            {
+                comando.ExecuteReader();
+                return "Participação cancelada";
+            }
+            catch (MySqlException mysqlEx)
+            {
+                throw mysqlEx;
+            }
+
+        }
+
+        public bool VerificaParticipacao(int idEvento, string username)
+        {
+
+            string query = "select username from participacoes where idEvento = " + idEvento + " " +
+                     "and username = " + username + "";
+
+            comando = new MySqlCommand(query, conexao);
+
+            try
+            {
+                comando.ExecuteReader();
+                return true;
+                
+            }
+            catch (MySqlException mysqlEx)
+            {
+                throw mysqlEx;
+            }
+
+        }
+
+        //DEFINIR HORARIO DO EVENTO E CONTROLAR PELO WINDOWS OU SERVIDOR DE HORARIO
 
         private static bool GetHasRows(MySqlDataReader data)
         {
