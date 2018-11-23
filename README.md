@@ -1,2 +1,2 @@
 # EventosPOA
-Sistema de Cadastro de eventos - C#
+Sistema de Cadastro de eventos - C# OO
